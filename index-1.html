@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Luis Inversiones</title>
+<style>
+:root{--bg:#0b1020;--panel:#121a2d;--panel2:#18223a;--text:#f5f7fb;--muted:#9aa6bd;--accent:#5eead4;--danger:#fb7185;--line:#26324c}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,Arial;background:var(--bg);color:var(--text)}
+button,input,select{font:inherit}button{cursor:pointer}.hidden{display:none!important}
+.screen{min-height:100vh}.auth{display:grid;place-items:center;padding:24px;background:radial-gradient(circle at top,#1c3150,transparent 55%),var(--bg)}
+.auth-card{width:min(430px,100%);background:rgba(18,26,45,.96);border:1px solid var(--line);border-radius:24px;padding:30px;box-shadow:0 24px 80px #0007}
+.logo{font-weight:800;font-size:25px}.logo span{color:var(--accent)}.sub{color:var(--muted);font-size:14px;margin:8px 0 24px}
+.tabs{display:flex;background:#0d1425;padding:4px;border-radius:12px;margin-bottom:20px}.tabs button{flex:1;border:0;background:none;color:var(--muted);padding:10px;border-radius:9px}.tabs button.active{background:var(--panel2);color:#fff}
+label{display:block;color:#b8c2d6;font-size:13px;margin:14px 0 7px}input,select{width:100%;padding:12px 13px;border:1px solid var(--line);border-radius:11px;background:#0c1424;color:#fff;outline:none}input:focus,select:focus{border-color:var(--accent)}
+.primary{width:100%;margin-top:20px;border:0;border-radius:11px;padding:13px;background:var(--accent);color:#06211d;font-weight:800}.notice{font-size:11px;line-height:1.5;color:var(--muted);margin-top:15px}
+.app{display:flex;min-height:100vh}.sidebar{width:240px;background:#0d1425;border-right:1px solid var(--line);padding:22px 14px;display:flex;flex-direction:column}.nav{margin-top:30px}.nav button{width:100%;text-align:left;border:0;background:none;color:var(--muted);padding:12px;border-radius:10px;margin:3px 0}.nav button.active,.nav button:hover{background:var(--panel2);color:#fff}.logout{margin-top:auto;background:none;border:1px solid var(--line);color:#cbd5e1;padding:10px;border-radius:10px}
+main{flex:1;padding:24px;max-width:1400px;margin:auto;width:100%}.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}.user{color:var(--muted);font-size:14px}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:18px}.metric{font-size:25px;font-weight:800;margin-top:8px}.muted{color:var(--muted);font-size:13px}.positive{color:var(--accent)}.negative{color:var(--danger)}
+.section{margin-top:20px}.section h2{font-size:17px}.table{width:100%;border-collapse:collapse}.table th,.table td{text-align:left;padding:13px 8px;border-bottom:1px solid var(--line);font-size:13px}.table th{color:var(--muted);font-weight:500}.actions{display:flex;gap:10px;flex-wrap:wrap}.btn{border:1px solid var(--line);background:var(--panel2);color:#fff;padding:10px 14px;border-radius:10px}.btn.primary2{background:var(--accent);color:#06211d;border-color:var(--accent);font-weight:700}
+.page{display:none}.page.active{display:block}.mobile-menu{display:none}
+.toast{position:fixed;right:20px;bottom:20px;background:#15213a;border:1px solid var(--line);padding:12px 16px;border-radius:10px;display:none}
+@media(max-width:850px){.sidebar{width:72px;padding:16px 9px}.sidebar .logo,.sidebar .nav span,.sidebar .logout span{display:none}.nav button{text-align:center}.grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.app{display:block}.sidebar{display:flex;width:100%;height:auto;position:sticky;top:0;z-index:5;border-right:0;border-bottom:1px solid var(--line);flex-direction:row;align-items:center;padding:10px}.sidebar .logo{display:block;font-size:18px}.nav{display:flex;margin:0 0 0 auto;gap:3px}.nav button{width:auto}.nav button span{display:none}.logout{margin:0 0 0 5px}.grid{grid-template-columns:1fr 1fr}main{padding:16px}.top h1{font-size:22px}}
+</style>
+</head>
+<body>
+<div id="auth" class="screen auth">
+  <div class="auth-card">
+    <div class="logo">Luis <span>Inversiones</span></div>
+    <div class="sub">Plataforma de gestión de inversiones · Demo funcional</div>
+    <div class="tabs"><button id="loginTab" class="active" onclick="showAuth('login')">Iniciar sesión</button><button id="registerTab" onclick="showAuth('register')">Crear cuenta</button></div>
+    <form id="loginForm">
+      <label>Correo electrónico</label><input type="email" id="loginEmail" required placeholder="tu@correo.com">
+      <label>Contraseña</label><input type="password" required placeholder="••••••••">
+      <button class="primary">Entrar</button>
+    </form>
+    <form id="registerForm" class="hidden">
+      <label>Nombre completo</label><input required placeholder="Tu nombre">
+      <label>Correo electrónico</label><input type="email" required placeholder="tu@correo.com">
+      <label>Contraseña</label><input type="password" minlength="8" required placeholder="Mínimo 8 caracteres">
+      <label>Perfil de riesgo</label><select><option>Conservador</option><option>Moderado</option><option>Agresivo</option></select>
+      <button class="primary">Crear cuenta</button>
+    </form>
+    <div class="notice">Esta interfaz es un prototipo. No procesa dinero real ni garantiza rendimientos. Antes de operar con fondos reales deben implementarse KYC/AML, custodia, seguridad, términos, privacidad y las licencias/registros que correspondan.</div>
+  </div>
+</div>
+
+<div id="app" class="app hidden">
+<aside class="sidebar">
+  <div class="logo">Luis <span>Inversiones</span></div>
+  <nav class="nav">
+    <button class="active" onclick="page('dashboard',this)">▣ <span>Inicio</span></button>
+    <button onclick="page('portfolio',this)">◈ <span>Portafolio</span></button>
+    <button onclick="page('markets',this)">↗ <span>Mercados</span></button>
+    <button onclick="page('activity',this)">≡ <span>Movimientos</span></button>
+    <button onclick="page('profile',this)">⚙ <span>Cuenta</span></button>
+  </nav>
+  <button class="logout" onclick="logout()">⇥ <span>Cerrar sesión</span></button>
+</aside>
+<main>
+  <div class="top"><div><h1 id="title">Resumen</h1><div class="user" id="welcome">Cuenta demo</div></div><button class="btn" onclick="toast('Notificaciones: no hay alertas nuevas')">🔔</button></div>
+
+  <section id="dashboard" class="page active">
+    <div class="grid">
+      <div class="card"><div class="muted">Valor del portafolio</div><div class="metric">$12.450.000</div><div class="positive">+4,8% este mes</div></div>
+      <div class="card"><div class="muted">Capital invertido</div><div class="metric">$11.880.000</div><div class="muted">COP</div></div>
+      <div class="card"><div class="muted">Rendimiento acumulado</div><div class="metric positive">+$570.000</div><div class="muted">Estimación histórica</div></div>
+      <div class="card"><div class="muted">Perfil de riesgo</div><div class="metric">Moderado</div><div class="muted">Editable en Cuenta</div></div>
+    </div>
+    <div class="section card"><h2>Distribución</h2><table class="table"><tr><th>Activo</th><th>Participación</th><th>Valor</th><th>Variación</th></tr>
+      <tr><td>Renta fija</td><td>45%</td><td>$5.602.500</td><td class="positive">+2,1%</td></tr>
+      <tr><td>Fondos</td><td>30%</td><td>$3.735.000</td><td class="positive">+5,4%</td></tr>
+      <tr><td>Acciones</td><td>15%</td><td>$1.867.500</td><td class="positive">+8,2%</td></tr>
+      <tr><td>Efectivo</td><td>10%</td><td>$1.245.000</td><td>—</td></tr></table></div>
+    <div class="section card"><h2>Acciones rápidas</h2><div class="actions"><button class="btn primary2" onclick="toast('Flujo de inversión preparado para conectar con un proveedor autorizado')">+ Nueva inversión</button><button class="btn" onclick="toast('Solicitud de retiro preparada')">Retirar fondos</button><button class="btn" onclick="page('markets',document.querySelectorAll('.nav button')[2])">Ver mercados</button></div></div>
+  </section>
+
+  <section id="portfolio" class="page"><div class="card"><h2>Mi portafolio</h2><p class="muted">Posiciones simuladas para el prototipo.</p><table class="table"><tr><th>Producto</th><th>Unidades</th><th>Precio</th><th>Valor</th><th>Estado</th></tr><tr><td>Fondo Balanceado</td><td>125</td><td>$28.500</td><td>$3.562.500</td><td class="positive">Activo</td></tr><tr><td>TES / Renta fija</td><td>50</td><td>$112.000</td><td>$5.600.000</td><td class="positive">Activo</td></tr><tr><td>ETF Global</td><td>10</td><td>$186.750</td><td>$1.867.500</td><td class="positive">Activo</td></tr></table></div></section>
+
+  <section id="markets" class="page"><div class="card"><h2>Mercados</h2><p class="muted">Cotizaciones de ejemplo; deben conectarse a una fuente de datos autorizada antes de producción.</p><table class="table"><tr><th>Instrumento</th><th>Precio</th><th>Variación</th><th>Acción</th></tr><tr><td>ETF Global</td><td>$186.750</td><td class="positive">+1,82%</td><td><button class="btn" onclick="toast('Detalle del instrumento')">Ver</button></td></tr><tr><td>Fondo Balanceado</td><td>$28.500</td><td class="positive">+0,64%</td><td><button class="btn" onclick="toast('Detalle del instrumento')">Ver</button></td></tr><tr><td>Renta fija</td><td>$112.000</td><td class="positive">+0,21%</td><td><button class="btn" onclick="toast('Detalle del instrumento')">Ver</button></td></tr></table></div></section>
+
+  <section id="activity" class="page"><div class="card"><h2>Movimientos</h2><table class="table"><tr><th>Fecha</th><th>Tipo</th><th>Concepto</th><th>Valor</th><th>Estado</th></tr><tr><td>18/09/2026</td><td>Aporte</td><td>Transferencia</td><td>$1.000.000</td><td class="positive">Confirmado</td></tr><tr><td>05/09/2026</td><td>Compra</td><td>ETF Global</td><td>$500.000</td><td class="positive">Ejecutado</td></tr></table></div></section>
+
+  <section id="profile" class="page"><div class="card"><h2>Cuenta y seguridad</h2><label>Nombre</label><input value="Usuario Demo"><label>Correo</label><input value="demo@luisinversiones.com"><label>Perfil de riesgo</label><select><option>Conservador</option><option selected>Moderado</option><option>Agresivo</option></select><div class="actions" style="margin-top:18px"><button class="btn primary2" onclick="toast('Cambios guardados en modo demo')">Guardar cambios</button><button class="btn" onclick="toast('2FA: flujo preparado para implementar')">Configurar 2FA</button></div></div>
+  <div class="section card"><h2>Protección del usuario</h2><p class="muted">La versión de producción debería incorporar verificación de identidad (KYC), prevención de lavado (AML), cifrado, gestión de sesiones, 2FA, auditoría, consentimiento informado, política de privacidad, términos y controles antifraude.</p></div></section>
+</main></div>
+<div id="toast" class="toast"></div>
+<script>
+function showAuth(mode){document.getElementById('loginForm').classList.toggle('hidden',mode!=='login');document.getElementById('registerForm').classList.toggle('hidden',mode!=='register');document.getElementById('loginTab').classList.toggle('active',mode==='login');document.getElementById('registerTab').classList.toggle('active',mode==='register')}
+document.getElementById('loginForm').onsubmit=e=>{e.preventDefault();document.getElementById('auth').classList.add('hidden');document.getElementById('app').classList.remove('hidden');document.getElementById('welcome').textContent='Sesión iniciada · modo demo'}
+document.getElementById('registerForm').onsubmit=e=>{e.preventDefault();toast('Cuenta creada en modo demo');showAuth('login')}
+function logout(){document.getElementById('app').classList.add('hidden');document.getElementById('auth').classList.remove('hidden')}
+function page(id,btn){document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.nav button').forEach(x=>x.classList.remove('active'));btn.classList.add('active');document.getElementById('title').textContent={dashboard:'Resumen',portfolio:'Portafolio',markets:'Mercados',activity:'Movimientos',profile:'Cuenta y seguridad'}[id]}
+function toast(msg){let t=document.getElementById('toast');t.textContent=msg;t.style.display='block';clearTimeout(window.tt);window.tt=setTimeout(()=>t.style.display='none',2400)}
+</script>
+</body>
+</html>
